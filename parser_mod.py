@@ -1,7 +1,11 @@
 import requests
 from bs4 import BeautifulSoup
+import configparser
 
-link = 'https://mosautoshina.ru/catalog/tyre/'
+settings = configparser.ConfigParser()
+settings.read('./parser4511/config.ini')
+start_page = settings['links']['start_page']
+
 
 
 def take_size_grid(link):
@@ -31,8 +35,18 @@ def take_size_grid(link):
     return width_list, profile_list, diameter_list
 
 
+def how_many_products(link):
+    res = requests.get(url=link)
+    soup = BeautifulSoup(res.text, 'lxml')
+    wheels = soup.find('span', class_ = 'count count-em').text
+    wheels = int(wheels)
+    return wheels
+
+
 if __name__ == "__main__":
-    v1, v2, v3 = take_size_grid(link=link)
+    #how_many_products(link='https://mosautoshina.ru/catalog/tyre/search/by-size/-165-70-14---------/')
+    
+    v1, v2, v3 = take_size_grid(link=start_page)
     print(f'\n width_list: {v1} \n')
     print(f'profile_list: {v2} \n')
     print(f'diameter_list {v3} \n')

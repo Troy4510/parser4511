@@ -156,6 +156,14 @@ def raw_flow_links_table():
         query = f'''INSERT INTO tLinks (link, product_count) VALUES ('{link}', 0)'''
         x = execute(query, False)
         
+        
+def ask_links_sum():
+    query = '''SELECT MAX(id) FROM tLinks'''
+    x = execute(query, True)
+    return x[0][0]        
 
-def check_links():
-    pass
+def take_link_from_table(link_id:int):
+    query = f'''SELECT * FROM tLinks WHERE id = {link_id}'''
+    x = execute(query,True)
+    return x[0][1], x[0][2]
+
